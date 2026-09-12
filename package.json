@@ -1,0 +1,19 @@
+{
+  "name": "vps-infra-public",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "author": "Alex Smolvin HouseOfHeisenberg@atomicmail.io (smolvin.com)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Smolvin/vps-public"
+  },
+  "description": "Public, reusable dev-onboarding scripts (macOS + Windows): isolated non-admin profile + a basic dev toolset. Scripts and documentation only, no npm dependencies.",
+  "scripts": {
+    "mac:profiles": "sudo scripts/09_create_profiles.sh",
+    "mac:profiles:apply": "sudo scripts/09_create_profiles.sh --apply",
+    "mac:dev-tools": "bash scripts/06_setup_new_dev_mac.sh",
+    "mac:dev-tools:check": "bash scripts/06_setup_new_dev_mac.sh --check",
+    "lint:scripts": "shellcheck scripts/*.sh"
+  }
+}

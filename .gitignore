@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+_inbox/
+
+# Real execution logs — contain real absolute paths, real hostnames, and
+# sometimes real personal data (e.g. an email baked into an SSH key
+# comment). "Was this run?" evidence lives in SCRIPTS_CHECKLIST.md instead;
+# raw logs stay machine-local only.
+scripts/logs/
+
+# Key material / secrets — should never live in this repo, but keeping
+# this here is cheap defense in depth against habit/accident.
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+id_ecdsa*
+*.ppk
+.env
+.env.*
+
+# Editor / OS noise
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# In case this ever grows real npm dependencies
+node_modules/
