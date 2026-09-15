@@ -18,9 +18,51 @@ basic set of dev tools. Nothing specific to any particular server/project
 | 09 | macOS | [`09_create_profiles.sh`](./scripts/09_create_profiles.en.md) | Isolated non-admin profiles (`personal`/`work`/`dev`/`sandbox`) |
 | 12 | Windows | [`12_create_dev_user.ps1`](./scripts/12_create_dev_user.en.md) | Isolated non-admin `dev` profile |
 | 13 | Windows | [`13_setup_dev_environment.ps1`](./scripts/13_setup_dev_environment.en.md) | winget-based dev toolset + git identity + SSH key |
+| 14 | Windows | [`14_reduce_windows_bloat.ps1`](./scripts/14_reduce_windows_bloat.en.md) | Turn off Windows ads/suggestions/telemetry (conservative) |
 
 Typical order on a new machine: isolated profile first (`09`/`12`), then
 — logged into it — the tooling (`06`/`13`).
+
+## Quickstart on a clean Windows machine
+
+This is **two separate Windows sessions, not one command** — a deliberate
+architectural choice (isolation), not an oversight: `12` creates a
+separate `dev` account and must run as administrator; `13` installs
+tools into that account and must run as that account itself — otherwise
+git identity/SSH key/winget packages land in the administrator's profile
+instead of where you'll actually develop.
+
+1. Open PowerShell **as administrator** (Win -> `PowerShell` ->
+   right-click -> "Run as administrator").
+2. If you get `cannot be loaded because running scripts is disabled on
+   this system` — allow local scripts to run, once:
+   ```powershell
+   Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+   ```
+3. Create the isolated `dev` account (dry-run first to see what it would
+   do, then for real):
+   ```powershell
+   cd path\to\repo\scripts
+   .\12_create_dev_user.ps1
+   .\12_create_dev_user.ps1 -Apply
+   ```
+4. Sign out of the current account (not just lock the screen) and log
+   into the newly created `dev`.
+5. In the new session, **no longer as administrator**, install the dev
+   tools:
+   ```powershell
+   cd path\to\repo\scripts
+   .\13_setup_dev_environment.ps1 -Check     # what's there / missing
+   .\13_setup_dev_environment.ps1             # install what's missing
+   ```
+
+If something along the way fails, both scripts print concrete fix steps
+straight to the console on error; the full list of common issues
+(execution policy, missing `winget`, administrator rights) is in
+[`scripts/12_create_dev_user.en.md`](./scripts/12_create_dev_user.en.md)
+and
+[`scripts/13_setup_dev_environment.en.md`](./scripts/13_setup_dev_environment.en.md),
+"Troubleshooting" section.
 
 ## References
 

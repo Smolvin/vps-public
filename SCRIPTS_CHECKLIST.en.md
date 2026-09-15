@@ -46,6 +46,7 @@ once.
 | 09 | `sudo scripts/09_create_profiles.sh`<br>`sudo scripts/09_create_profiles.sh --apply [--only <name>] [--filevault]` | ⬜ | ⬜ | See `scripts/09_create_profiles.en.md`. `bash -n` clean. Requires `sudo` — real run (creating system accounts) is up to the user. |
 | 12 | `scripts\12_create_dev_user.ps1`<br>`scripts\12_create_dev_user.ps1 -Apply` | ⬜ | ⬜ | See `scripts/12_create_dev_user.en.md`. Requires administrator rights and creates a real Windows account — up to the user. |
 | 13 | `scripts\13_setup_dev_environment.ps1`<br>`scripts\13_setup_dev_environment.ps1 -Check` | ⬜ | ⬜ | See `scripts/13_setup_dev_environment.en.md`. Not yet run on a real Windows machine. |
+| 14 | `scripts\14_reduce_windows_bloat.ps1`<br>`scripts\14_reduce_windows_bloat.ps1 -Apply` | ⬜ | ⬜ | See `scripts/14_reduce_windows_bloat.en.md`. Requires administrator rights, changes HKLM policies/services, and mounts other profiles' registry hives. Verified statically only (parsing + review) -- an actual run on a live machine is not yet confirmed. |
 
 ---
 

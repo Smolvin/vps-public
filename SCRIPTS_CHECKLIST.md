@@ -46,6 +46,7 @@
 | 09 | `sudo scripts/09_create_profiles.sh`<br>`sudo scripts/09_create_profiles.sh --apply [--only <name>] [--filevault]` | ⬜ | ⬜ | Див. `scripts/09_create_profiles.md`. `bash -n` чистий. Потребує `sudo` — реальний прогін (створення системних акаунтів) чекає на користувача. |
 | 12 | `scripts\12_create_dev_user.ps1`<br>`scripts\12_create_dev_user.ps1 -Apply` | ⬜ | ⬜ | Див. `scripts/12_create_dev_user.md`. Потребує прав адміністратора і створює реальний акаунт Windows — чекає на користувача. |
 | 13 | `scripts\13_setup_dev_environment.ps1`<br>`scripts\13_setup_dev_environment.ps1 -Check` | ⬜ | ⬜ | Див. `scripts/13_setup_dev_environment.md`. Не запускалося на реальній Windows-машині. |
+| 14 | `scripts\14_reduce_windows_bloat.ps1`<br>`scripts\14_reduce_windows_bloat.ps1 -Apply` | ⬜ | ⬜ | Див. `scripts/14_reduce_windows_bloat.md`. Потребує прав адміністратора, змінює HKLM-політики/служби і монтує чужі registry-хайви. Перевірено лише статично (парсинг+рев'ю) — реальний прогін на живій машині ще не підтверджений. |
 
 ---
 

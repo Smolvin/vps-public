@@ -30,3 +30,4 @@ id_ecdsa*
 
 # In case this ever grows real npm dependencies
 node_modules/
+dev-notes.md

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Dev tools onboarding on Windows — the same principle as
     06_setup_new_dev_mac.sh (see next to it in this same repository, the
@@ -24,12 +24,21 @@
     Installs nothing — only shows what's already there and what's
     missing.
 
+.PARAMETER Remove
+    Roll back: uninstalls (via winget) whichever of $Packages below is
+    currently installed. Asks for confirmation first (every time -- this
+    is destructive on every run, not just the first). Does NOT touch git
+    identity or the SSH key -- those are left in place, remove them
+    manually if you want them gone too.
+
 .EXAMPLE
     .\13_setup_dev_environment.ps1            # install the whole set
     .\13_setup_dev_environment.ps1 -Check     # status only
+    .\13_setup_dev_environment.ps1 -Remove    # uninstall what this script installed
 #>
 param(
-    [switch]$Check
+    [switch]$Check,
+    [switch]$Remove
 )
 
 $ErrorActionPreference = "Continue"
@@ -52,9 +61,74 @@ function Test-WingetPackage($id) {
     return ($out -match [regex]::Escape($id))
 }
 
+$currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Host "[warn] Running as Administrator." -ForegroundColor Yellow
+    Write-Host "This script is meant to run as the regular user it's setting up (e.g. 'dev'," -ForegroundColor Yellow
+    Write-Host "created by 12_create_dev_user.ps1) — not as Administrator. Otherwise git" -ForegroundColor Yellow
+    Write-Host "identity, the SSH key and per-user winget installs land in the Administrator" -ForegroundColor Yellow
+    Write-Host "profile instead of the profile you actually want to develop in." -ForegroundColor Yellow
+    if (-not $Check) {
+        $confirm = Read-Host "Continue anyway as Administrator? [y/N]"
+        if ($confirm -notmatch '^[Yy]$') {
+            Write-Host "Cancelled — log in as the target user and re-run this script from there."
+            exit 1
+        }
+    }
+}
+
 if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-    Write-Error "winget not found — update 'App Installer' from the Microsoft Store and run the script again."
+    Write-Host "winget not found." -ForegroundColor Red
+    Write-Host ""
+    Write-Host "How to fix:" -ForegroundColor Yellow
+    Write-Host "  1. Open Microsoft Store, search for 'App Installer', click Install/Update."
+    Write-Host "  2. No Store access on this machine? Download the latest .msixbundle from"
+    Write-Host "     the official winget-cli releases page:"
+    Write-Host "     https://github.com/microsoft/winget-cli/releases/latest" -ForegroundColor Cyan
+    Write-Host "     then install it with: Add-AppxPackage <downloaded file>.msixbundle"
+    Write-Host "  3. Close and reopen PowerShell, then run this script again."
+    Write-Host ""
+    Write-Host "See the 'Troubleshooting' section in 13_setup_dev_environment.md / .en.md" -ForegroundColor Yellow
+    Write-Host "for other common first-run issues (e.g. execution policy)." -ForegroundColor Yellow
     exit 1
+}
+
+if ($Remove) {
+    Log "=== Removing dev tools (winget uninstall) ==="
+    Write-Host ""
+    Write-Host "About to uninstall these packages via winget, whichever are installed:" -ForegroundColor Yellow
+    foreach ($pkg in $Packages) { Write-Host "  - $($pkg.Name) ($($pkg.Id))" }
+    Write-Host "Git identity and the SSH key are left untouched -- remove those manually if you want them gone too." -ForegroundColor Yellow
+    $removeConfirm = Read-Host "Continue? [y/N]"
+    if ($removeConfirm -notmatch '^[Yy]$') {
+        Log "Cancelled — nothing was removed."
+        exit 1
+    }
+
+    $RemoveFailed = @()
+    foreach ($pkg in $Packages) {
+        if (-not (Test-WingetPackage $pkg.Id)) {
+            Log "[skip] $($pkg.Name) not installed."
+            continue
+        }
+        Log "Uninstalling $($pkg.Name) ($($pkg.Id))..."
+        try {
+            winget uninstall --id $pkg.Id -e --silent
+            if ($LASTEXITCODE -ne 0) { throw "winget exit code $LASTEXITCODE" }
+            Log "[ok] $($pkg.Name) uninstalled."
+        } catch {
+            Log "[warn] $($pkg.Name) failed to uninstall: $_"
+            $RemoveFailed += $pkg.Name
+        }
+    }
+
+    Log "=== Summary ==="
+    if ($RemoveFailed.Count -gt 0) {
+        Log "Failed to uninstall: $($RemoveFailed -join ', ')"
+    } else {
+        Log "Done."
+    }
+    exit 0
 }
 
 if ($Check) {
@@ -62,9 +136,13 @@ if ($Check) {
     foreach ($pkg in $Packages) {
         if (Test-WingetPackage $pkg.Id) { Ok-Line $pkg.Name "installed" } else { Miss-Line $pkg.Name }
     }
-    $gitName = git config --global user.name 2>$null
-    $gitEmail = git config --global user.email 2>$null
-    if ($gitName -and $gitEmail) { Ok-Line "git identity" "$gitName <$gitEmail>" } else { Miss-Line "git identity" }
+    if (Get-Command git -ErrorAction SilentlyContinue) {
+        $gitName = git config --global user.name 2>$null
+        $gitEmail = git config --global user.email 2>$null
+        if ($gitName -and $gitEmail) { Ok-Line "git identity" "$gitName <$gitEmail>" } else { Miss-Line "git identity" }
+    } else {
+        Miss-Line "git identity"
+    }
     $sshKey = "$env:USERPROFILE\.ssh\id_ed25519.pub"
     if (Test-Path $sshKey) { Ok-Line "SSH key" $sshKey } else { Miss-Line "SSH key" }
     Log "Run without -Check to install what's missing."
@@ -92,19 +170,23 @@ foreach ($pkg in $Packages) {
 
 # Git identity — ask only if not already configured (idempotent).
 Log "=== Git identity ==="
-$gitName = git config --global user.name 2>$null
-$gitEmail = git config --global user.email 2>$null
-if ($gitName -and $gitEmail) {
-    Log "[skip] git identity already set: $gitName <$gitEmail>"
+if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+    Log "[skip] git is not available (its install above may have failed) — re-run the script after fixing that."
 } else {
-    $newName = Read-Host "git user.name"
-    $newEmail = Read-Host "git user.email"
-    if ($newName -and $newEmail) {
-        git config --global user.name "$newName"
-        git config --global user.email "$newEmail"
-        Log "[ok] git identity configured."
+    $gitName = git config --global user.name 2>$null
+    $gitEmail = git config --global user.email 2>$null
+    if ($gitName -and $gitEmail) {
+        Log "[skip] git identity already set: $gitName <$gitEmail>"
     } else {
-        Log "[skip] Empty input — git identity not configured, set it manually later."
+        $newName = Read-Host "git user.name"
+        $newEmail = Read-Host "git user.email"
+        if ($newName -and $newEmail) {
+            git config --global user.name "$newName"
+            git config --global user.email "$newEmail"
+            Log "[ok] git identity configured."
+        } else {
+            Log "[skip] Empty input — git identity not configured, set it manually later."
+        }
     }
 }
 
@@ -115,16 +197,21 @@ $sshKey = "$sshDir\id_ed25519"
 if (Test-Path "$sshKey.pub") {
     Log "[skip] SSH key already exists ($sshKey.pub)."
 } else {
-    $genKey = Read-Host "Generate an SSH key (ed25519) for GitHub? [y/N]"
-    if ($genKey -match '^[Yy]$') {
-        New-Item -ItemType Directory -Force -Path $sshDir | Out-Null
-        ssh-keygen -t ed25519 -f $sshKey -N '""'
-        Log "[ok] Key created. Public key (add it to GitHub -> Settings -> SSH keys):"
-        Write-Host ""
-        Get-Content "$sshKey.pub" | Write-Host -ForegroundColor Cyan
-        Write-Host ""
+    if (-not (Get-Command ssh-keygen -ErrorAction SilentlyContinue)) {
+        Log "[skip] ssh-keygen not found -- enable the 'OpenSSH Client' optional Windows feature"
+        Log "       (Settings -> System -> Optional features) and re-run this script."
     } else {
-        Log "[skip] Skipped by choice."
+        $genKey = Read-Host "Generate an SSH key (ed25519) for GitHub? [y/N]"
+        if ($genKey -match '^[Yy]$') {
+            New-Item -ItemType Directory -Force -Path $sshDir | Out-Null
+            ssh-keygen -t ed25519 -f $sshKey -N '""'
+            Log "[ok] Key created. Public key (add it to GitHub -> Settings -> SSH keys):"
+            Write-Host ""
+            Get-Content "$sshKey.pub" | Write-Host -ForegroundColor Cyan
+            Write-Host ""
+        } else {
+            Log "[skip] Skipped by choice."
+        }
     }
 }
 
