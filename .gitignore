@@ -30,3 +30,6 @@ id_ecdsa*
 
 # In case this ever grows real npm dependencies
 node_modules/
+
+# Local Claude Code session status (never committed)
+.claude/session-status.md
