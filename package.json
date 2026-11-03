@@ -1,6 +1,6 @@
 {
   "name": "vps-infra-public",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "license": "MIT",
   "author": "Alex Smolvin HouseOfHeisenberg@atomicmail.io (smolvin.com)",
@@ -14,6 +14,11 @@
     "mac:profiles:apply": "sudo scripts/09_create_profiles.sh --apply",
     "mac:dev-tools": "bash scripts/06_setup_new_dev_mac.sh",
     "mac:dev-tools:check": "bash scripts/06_setup_new_dev_mac.sh --check",
+    "mac:dev-tools:inventory": "bash scripts/06_setup_new_dev_mac.sh --inventory",
+    "mac:git-identities": "bash scripts/14_setup_git_identities.sh",
+    "mac:git-identities:apply": "bash scripts/14_setup_git_identities.sh --apply",
+    "mac:shell": "bash scripts/15_setup_shell_and_macos.sh",
+    "mac:shell:apply": "bash scripts/15_setup_shell_and_macos.sh --apply",
     "lint:scripts": "shellcheck scripts/*.sh"
   }
 }

@@ -18,15 +18,20 @@ dev-інструментів. Нічого специфічного для ко�
 | 09 | macOS | [`09_create_profiles.sh`](./scripts/09_create_profiles.md) | Ізольовані не-admin профілі (`personal`/`work`/`dev`/`sandbox`) |
 | 12 | Windows | [`12_create_dev_user.ps1`](./scripts/12_create_dev_user.md) | Ізольований не-admin профіль `dev` |
 | 13 | Windows | [`13_setup_dev_environment.ps1`](./scripts/13_setup_dev_environment.md) | Набір dev-інструментів через winget + git identity + SSH-ключ |
+| 14 | macOS | [`14_setup_git_identities.sh`](./scripts/14_setup_git_identities.md) | Кілька git-ідентичностей (`includeIf`) + окремий SSH-ключ і `Host github-<slug>` на кожну, глобальний gitignore |
+| 15 | macOS | [`15_setup_shell_and_macos.sh`](./scripts/15_setup_shell_and_macos.md) | Історія zsh, змінні Android SDK, налаштування Finder і папка скріншотів |
 
 Типовий порядок на новій машині: спочатку ізольований профіль (`09`/`12`),
-потім — залогінившись під ним — інструменти (`06`/`13`).
+потім — залогінившись під ним — інструменти (`06`/`13`), далі на Mac —
+налаштування (`14`, `15`).
 
 ## Довідники
 
 - [`docs/mount-tools.md`](./docs/mount-tools.md) — sshfs, `restic mount`,
   `borg mount`, macFUSE (macOS) / WinFsp (Windows): навіщо потрібні та як
   підняти вручну.
+- [`docs/specs/`](./docs/specs/) — специфікації доопрацювань (зараз —
+  [`mac-onboarding-0.2.md`](./docs/specs/mac-onboarding-0.2.md)).
 
 ## Конвенції
 

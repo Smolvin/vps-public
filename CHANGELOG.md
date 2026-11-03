@@ -4,6 +4,45 @@
 
 Формат — [Keep a Changelog](https://keepachangelog.com/), версії — [SemVer](https://semver.org/).
 
+## [0.2.0] — 2026-11-03
+
+Специфікація: [`docs/specs/mac-onboarding-0.2.md`](./docs/specs/mac-onboarding-0.2.md).
+
+### Додано
+
+- `14_setup_git_identities.sh` + `.md` — кілька git-ідентичностей на
+  одному Mac: `~/.gitconfig-<slug>` + `includeIf "gitdir:<папка>/"`,
+  окремий SSH-ключ і `Host github-<slug>` на кожну, `ControlMaster` для
+  SSH, глобальний gitignore. Сухий прогін за замовчуванням, `--apply`,
+  бекапи, блоки з маркерами, без перезапису наявного.
+- `15_setup_shell_and_macos.sh` + `.md` — історія zsh, змінні Android
+  SDK, аліаси docker compose (`--with-docker-aliases`), налаштування
+  Finder (розширення, приховані файли, шлях у заголовку, рядок шляху) і
+  папка скріншотів. Сухий прогін за замовчуванням, `--apply`.
+- `06`: `--inventory` — тільки читання, порівнює машину зі списками
+  скрипта в обидва боки.
+- `06`: `--with-comms` — група застосунків для спілкування й віддаленого
+  доступу (Zoom, Telegram, WhatsApp, AnyDesk, TeamViewer, OBS).
+- `06`: нові формули — `semgrep`, `trivy`, `osv-scanner`, `ffmpeg`,
+  `pandoc`, `poppler`, `exiftool`, `rsync`, `pstree`, `jq`, `ripgrep`;
+  нові casks — `coteditor`, `stats`, `vlc`, `obsidian`.
+- `06 --check`: застарілі пакети зі списків скрипта (`brew outdated`).
+- `docs/specs/` — специфікації доопрацювань.
+- `package.json`: npm-скрипти для `06 --inventory`, `14`, `15`.
+
+### Змінено
+
+- `06`: `restic`, `borgbackup` перенесені з основного списку в
+  опціональні (`OPTIONAL_FORMULAE`/`OPTIONAL_CASKS` — разом з `ollama`,
+  `yt-dlp`, `logrotate`, `gcloud-cli`, `wireguard`, `macfuse`,
+  `sshfs-mac`); `docs/mount-tools.md` оновлено.
+- `06`: застосунок, уже встановлений не через Homebrew (`.dmg`, App
+  Store), не вважається відсутнім — пропускається з підказкою
+  `brew install --cask --adopt`.
+- `06`: помилка `corepack enable` тепер потрапляє в підсумок помилок;
+  глобальні npm-пакети — списком `NPM_GLOBALS`.
+- `06`: `shellcheck` повністю чистий.
+
 ## [0.1.0] — 2026-09-10
 
 ### Додано

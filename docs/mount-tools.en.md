@@ -2,9 +2,11 @@
 
 **[Українська версія](./mount-tools.md)**
 
-Reference for packages installed by [`06_setup_new_dev_mac.sh`](../scripts/06_setup_new_dev_mac.en.md)
-(including the optional `macfuse`/`sshfs-mac` block, commented out by
-default). Common theme — all three tools give access to "not quite
+Reference for packages listed in [`06_setup_new_dev_mac.sh`](../scripts/06_setup_new_dev_mac.en.md).
+All of them are in the optional lists (`OPTIONAL_FORMULAE`/`OPTIONAL_CASKS`:
+`restic`, `borgbackup`, `macfuse`, `sshfs-mac`) and aren't installed by
+default — install as needed (`brew install <name>`) or move them into the
+script's main list. Common theme — all three tools give access to "not quite
 ordinary" data (a remote directory over SSH, the contents of a backup
 archive) as a regular filesystem you can open in Finder/Explorer or walk
 with any program, not just a dedicated CLI.

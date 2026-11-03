@@ -42,10 +42,12 @@ once.
 
 | # | Script | Dry run | Real execution | Notes |
 |---|---|:---:|:---:|---|
-| 06 | `scripts/06_setup_new_dev_mac.sh`<br>`scripts/06_setup_new_dev_mac.sh --check` | ⬜ | ⬜ | See `scripts/06_setup_new_dev_mac.en.md`. `bash -n`/`shellcheck` clean (1 info-level SC2016 warning, expected — a literal `$HOME` string in an rc file). Real run not yet confirmed in this repository. |
+| 06 | `scripts/06_setup_new_dev_mac.sh`<br>`scripts/06_setup_new_dev_mac.sh --check` | ⬜ | ⬜ | See `scripts/06_setup_new_dev_mac.en.md`. `bash -n`/`shellcheck` clean. Since v0.2.0 — also `--inventory` (read-only) and `--with-comms`. 2026-11-03: `--check` and `--inventory` run on a working Mac (they install nothing) — a full real run not yet confirmed. |
 | 09 | `sudo scripts/09_create_profiles.sh`<br>`sudo scripts/09_create_profiles.sh --apply [--only <name>] [--filevault]` | ⬜ | ⬜ | See `scripts/09_create_profiles.en.md`. `bash -n` clean. Requires `sudo` — real run (creating system accounts) is up to the user. |
 | 12 | `scripts\12_create_dev_user.ps1`<br>`scripts\12_create_dev_user.ps1 -Apply` | ⬜ | ⬜ | See `scripts/12_create_dev_user.en.md`. Requires administrator rights and creates a real Windows account — up to the user. |
 | 13 | `scripts\13_setup_dev_environment.ps1`<br>`scripts\13_setup_dev_environment.ps1 -Check` | ⬜ | ⬜ | See `scripts/13_setup_dev_environment.en.md`. Not yet run on a real Windows machine. |
+| 14 | `scripts/14_setup_git_identities.sh`<br>`scripts/14_setup_git_identities.sh --apply` | ⬜ | ⬜ | See `scripts/14_setup_git_identities.en.md`. `bash -n`/`shellcheck` clean. 2026-11-03: dry run, `--apply` twice (idempotency) and conflicts tested on a test `HOME` — not run on a real account; key generation (`ssh-keygen` with a passphrase) is interactive only. |
+| 15 | `scripts/15_setup_shell_and_macos.sh`<br>`scripts/15_setup_shell_and_macos.sh --apply [--android] [--with-docker-aliases]` | ⬜ | ⬜ | See `scripts/15_setup_shell_and_macos.en.md`. `bash -n`/`shellcheck` clean. 2026-11-03: dry run on a real account (changed nothing); `--apply` twice — on a test `HOME` with `defaults`/`killall` stubs. Real `--apply` is up to the user. |
 
 ---
 

@@ -2,7 +2,7 @@
 
 **[Українська версія](./mac-onboarding-0.2.md)**
 
-- **Status:** agreed, ready for implementation
+- **Status:** implemented 2026-11-03 (`CHANGELOG.md` → 0.2.0)
 - **Added:** 2026-11-03
 - **Source:** comparing the lists in `scripts/06_setup_new_dev_mac.sh` with
   what was actually needed on a working Mac over ~2 months of active use.
@@ -27,8 +27,9 @@ only, plain run — installs what's missing.
 ### A.1. Fixes to the existing lists
 
 - `python@3.14` — stays.
-- `restic`, `borgbackup` — moved from the main list to the optional
-  (commented-out) block next to `macfuse`/`sshfs-mac`; `docs/mount-tools.md`
+- `restic`, `borgbackup` — moved from the main list to the optional ones
+  (`OPTIONAL_FORMULAE`/`OPTIONAL_CASKS` arrays, never installed
+  automatically but known to `--inventory`) next to `macfuse`/`sshfs-mac`; `docs/mount-tools.md`
   updated accordingly ("install if needed").
 - `claude`, `shottr` (casks) — verify the cask tokens are current
   (`brew info --cask`); fix if not.
@@ -41,7 +42,7 @@ only, plain run — installs what's missing.
 - Utilities: `rsync` (modern, instead of the system one), `pstree`, `jq`,
   `ripgrep`.
 
-### A.3. New formulae (optional, commented out)
+### A.3. New formulae (optional, `OPTIONAL_*`)
 
 `ollama` (local LLMs), `yt-dlp`, `logrotate`, `gcloud-cli` (cask).
 
@@ -64,7 +65,9 @@ Prints two sections:
 1. **On the machine, not in the script:** `brew leaves`,
    `brew list --cask`, `npm ls -g --depth=0` minus the 06 main + optional
    lists.
-2. **In the script, not on the machine.**
+2. **In the script, not on the machine** — with apps present in
+   `/Applications` but not via Homebrew listed separately (neither a
+   normal run nor `--check` treats them as missing).
 
 Installs nothing, writes no logs. Output is package names only (no paths),
 so it's safe to paste into an issue.

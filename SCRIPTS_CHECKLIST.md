@@ -42,10 +42,12 @@
 
 | № | Скрипт | Сухий прогін | Реальне виконання | Примітки |
 |---|---|:---:|:---:|---|
-| 06 | `scripts/06_setup_new_dev_mac.sh`<br>`scripts/06_setup_new_dev_mac.sh --check` | ⬜ | ⬜ | Див. `scripts/06_setup_new_dev_mac.md`. `bash -n`/`shellcheck` чисті (1 попередження info-рівня SC2016, очікувано — літеральний `$HOME`-рядок у rc-файл). Реальний прогін ще не підтверджений у цьому репозиторії. |
+| 06 | `scripts/06_setup_new_dev_mac.sh`<br>`scripts/06_setup_new_dev_mac.sh --check` | ⬜ | ⬜ | Див. `scripts/06_setup_new_dev_mac.md`. `bash -n`/`shellcheck` чисті. З v0.2.0 — ще `--inventory` (тільки читання) і `--with-comms`. 2026-11-03: `--check` і `--inventory` прогнані на робочому Mac (нічого не встановлюють) — повний реальний прогін ще не підтверджений. |
 | 09 | `sudo scripts/09_create_profiles.sh`<br>`sudo scripts/09_create_profiles.sh --apply [--only <name>] [--filevault]` | ⬜ | ⬜ | Див. `scripts/09_create_profiles.md`. `bash -n` чистий. Потребує `sudo` — реальний прогін (створення системних акаунтів) чекає на користувача. |
 | 12 | `scripts\12_create_dev_user.ps1`<br>`scripts\12_create_dev_user.ps1 -Apply` | ⬜ | ⬜ | Див. `scripts/12_create_dev_user.md`. Потребує прав адміністратора і створює реальний акаунт Windows — чекає на користувача. |
 | 13 | `scripts\13_setup_dev_environment.ps1`<br>`scripts\13_setup_dev_environment.ps1 -Check` | ⬜ | ⬜ | Див. `scripts/13_setup_dev_environment.md`. Не запускалося на реальній Windows-машині. |
+| 14 | `scripts/14_setup_git_identities.sh`<br>`scripts/14_setup_git_identities.sh --apply` | ⬜ | ⬜ | Див. `scripts/14_setup_git_identities.md`. `bash -n`/`shellcheck` чисті. 2026-11-03: сухий прогін, `--apply` двічі (ідемпотентність) і конфлікти перевірені на тестовому `HOME` — на реальному акаунті не запускався; генерація ключа (`ssh-keygen` з passphrase) — тільки інтерактивно. |
+| 15 | `scripts/15_setup_shell_and_macos.sh`<br>`scripts/15_setup_shell_and_macos.sh --apply [--android] [--with-docker-aliases]` | ⬜ | ⬜ | Див. `scripts/15_setup_shell_and_macos.md`. `bash -n`/`shellcheck` чисті. 2026-11-03: сухий прогін на реальному акаунті (нічого не змінив); `--apply` двічі — на тестовому `HOME` із заглушками `defaults`/`killall`. Реальний `--apply` — за користувачем. |
 
 ---
 

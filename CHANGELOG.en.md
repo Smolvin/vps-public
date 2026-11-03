@@ -4,6 +4,46 @@
 
 Format — [Keep a Changelog](https://keepachangelog.com/), versioning — [SemVer](https://semver.org/).
 
+## [0.2.0] — 2026-11-03
+
+Spec: [`docs/specs/mac-onboarding-0.2.en.md`](./docs/specs/mac-onboarding-0.2.en.md).
+
+### Added
+
+- `14_setup_git_identities.sh` + `.md` — several git identities on one
+  Mac: `~/.gitconfig-<slug>` + `includeIf "gitdir:<folder>/"`, a separate
+  SSH key and `Host github-<slug>` for each, SSH `ControlMaster`, a global
+  gitignore. Dry run by default, `--apply`, backups, marker blocks, never
+  overwrites existing settings.
+- `15_setup_shell_and_macos.sh` + `.md` — zsh history, Android SDK env
+  vars, docker compose aliases (`--with-docker-aliases`), Finder settings
+  (extensions, hidden files, path in title, path bar) and the screenshot
+  folder. Dry run by default, `--apply`.
+- `06`: `--inventory` — read-only, compares the machine with the
+  script's lists both ways.
+- `06`: `--with-comms` — communication & remote-access apps group (Zoom,
+  Telegram, WhatsApp, AnyDesk, TeamViewer, OBS).
+- `06`: new formulae — `semgrep`, `trivy`, `osv-scanner`, `ffmpeg`,
+  `pandoc`, `poppler`, `exiftool`, `rsync`, `pstree`, `jq`, `ripgrep`;
+  new casks — `coteditor`, `stats`, `vlc`, `obsidian`.
+- `06 --check`: outdated packages from the script's lists
+  (`brew outdated`).
+- `docs/specs/` — specs for improvements.
+- `package.json`: npm scripts for `06 --inventory`, `14`, `15`.
+
+### Changed
+
+- `06`: `restic`, `borgbackup` moved from the main list to the optional
+  ones (`OPTIONAL_FORMULAE`/`OPTIONAL_CASKS` — together with `ollama`,
+  `yt-dlp`, `logrotate`, `gcloud-cli`, `wireguard`, `macfuse`,
+  `sshfs-mac`); `docs/mount-tools.en.md` updated.
+- `06`: an app already installed outside Homebrew (`.dmg`, App Store) is
+  no longer treated as missing — it's skipped with a
+  `brew install --cask --adopt` hint.
+- `06`: a `corepack enable` failure now lands in the failure summary;
+  global npm packages come from the `NPM_GLOBALS` list.
+- `06`: `shellcheck` fully clean.
+
 ## [0.1.0] — 2026-09-10
 
 ### Added
