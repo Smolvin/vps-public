@@ -10,7 +10,15 @@ off and moved to `CHANGELOG.md` with a version.
 
 ## Вхідні (Incoming)
 
-_(empty)_
+### Mac onboarding additions → v0.2.0 (2026-11-03)
+
+Spec: [`docs/specs/mac-onboarding-0.2.en.md`](./docs/specs/mac-onboarding-0.2.en.md).
+
+- [ ] (2026-11-03) 06: fix lists (restic/borg → optional), new formulae and casks, `corepack enable`, `--with-comms` — spec A.1–A.5.
+- [ ] (2026-11-03) 06: `--inventory` and `brew outdated` in `--check` — spec A.6–A.7.
+- [ ] (2026-11-03) New script 14: git identities (`includeIf`), ssh keys and `Host github-<slug>`, global gitignore — spec B.
+- [ ] (2026-11-03) New script 15: zsh history, Android SDK, macOS `defaults` — spec C.
+- [ ] (2026-11-03) uk/en docs, checklist, README, CHANGELOG, `package.json` → 0.2.0 — spec D.
 
 ## Зроблено (Done)
 

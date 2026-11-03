@@ -33,3 +33,4 @@ node_modules/
 
 # Local Claude Code session status (never committed)
 .claude/session-status.md
+/_drafts/

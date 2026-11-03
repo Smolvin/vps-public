@@ -10,7 +10,15 @@
 
 ## Вхідні
 
-_(порожньо)_
+### Доповнення Mac-онбордингу → v0.2.0 (2026-11-03)
+
+Специфікація: [`docs/specs/mac-onboarding-0.2.md`](./docs/specs/mac-onboarding-0.2.md).
+
+- [ ] (2026-11-03) 06: виправити списки (restic/borg → опціональні), нові формули й casks, `corepack enable`, `--with-comms` — спека A.1–A.5.
+- [ ] (2026-11-03) 06: `--inventory` і `brew outdated` у `--check` — спека A.6–A.7.
+- [ ] (2026-11-03) Новий скрипт 14: git-ідентичності (`includeIf`), ssh-ключі й `Host github-<slug>`, глобальний gitignore — спека B.
+- [ ] (2026-11-03) Новий скрипт 15: історія zsh, Android SDK, `defaults` macOS — спека C.
+- [ ] (2026-11-03) Доки uk/en, чекліст, README, CHANGELOG, `package.json` → 0.2.0 — спека D.
 
 ## Зроблено
 
